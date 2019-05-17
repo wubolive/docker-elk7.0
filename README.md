@@ -1,19 +1,5 @@
 官方文档：https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html
 
-### 拉取Docker镜像
-
-```
-docker pull docker.elastic.co/elasticsearch/elasticsearch:7.0.0
-docker pull docker.elastic.co/kibana/kibana:7.0.0
-docker pull mobz/elasticsearch-head:5
-```
-
-### 拉取docker-compose文件
-
-```
-git clone https://github.com/wubolive/docker-elk7.0.git
-```
-
 ### 优化内核配置
 
 ```
@@ -29,9 +15,24 @@ vim /etc/security/limits.conf
 * hard memlock unlimited
 ```
 
+### 拉取Docker镜像
+
+```
+docker pull docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+docker pull docker.elastic.co/kibana/kibana:7.0.0
+docker pull mobz/elasticsearch-head:5
+```
+
+### 拉取docker-compose文件
+
+```
+git clone https://github.com/wubolive/docker-elk7.0.git
+```
+
 ### 给予elasticsearch目录权限
 
 ```
+cd docker-elk7.0
 chmod g+rwx -R elasticsearch
 chown 1000:0 -R elasticsearch
 ```
