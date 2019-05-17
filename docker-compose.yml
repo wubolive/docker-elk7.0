@@ -1,6 +1,6 @@
 version: '2'
 services:
-  Es-Master:
+  es-master:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: Es-Master
     restart: always
@@ -23,7 +23,7 @@ services:
       - 9200:9200
     networks:
       - Es-Net
-  Es-Node1:
+  es-node1:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: Es-Node1
     restart: always
@@ -44,7 +44,7 @@ services:
       - ./elasticsearch/Es-Node1/logs:/usr/share/elasticsearch/logs
     networks:
       - Es-Net
-  Es-Node2:
+  es-eode2:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
     container_name: Es-Node2
     restart: always
@@ -65,7 +65,7 @@ services:
       - ./elasticsearch/Es-Node2/logs:/usr/share/elasticsearch/logs
     networks:
       - Es-Net
-  Es-Head:
+  es-head:
     image: mobz/elasticsearch-head:5
     container_name: Es-Head
     restart: always
@@ -80,11 +80,11 @@ services:
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
     links:
-      - Es-Master
+      - es-master
     environment:
       SERVER_NAME: kibana
       SERVER_HOST: 0.0.0.0
-      ELASTICSEARCH_HOSTS: http://Es-Master:9200
+      ELASTICSEARCH_HOSTS: http://es-master:9200
     ports:
       - 5601:5601
     networks:

@@ -32,8 +32,8 @@ vim /etc/security/limits.conf
 ### 给予elasticsearch目录权限
 
 ```
-chmod g+rwx elasticsearch
-chown 1000:1000 elasticsearch
+chmod g+rwx -R elasticsearch
+chown 1000:0 -R elasticsearch
 ```
 
 ### 启动ES集群
