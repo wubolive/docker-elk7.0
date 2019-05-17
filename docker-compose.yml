@@ -1,0 +1,94 @@
+version: '2'
+services:
+  Es-Master:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    container_name: Es-Master
+    restart: always
+    environment:
+      - node.name=Es-Master
+      - discovery.seed_hosts=Es-Master,Es-Node1,Es-Node2
+      - cluster.initial_master_nodes=Es-Master,Es-Node1,Es-Node2
+      - cluster.name=Es-Service
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch/Es-Master/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/Es-Master/conf:/usr/share/elasticsearch/config
+      - ./elasticsearch/Es-Master/logs:/usr/share/elasticsearch/logs
+    ports:
+      - 9200:9200
+    networks:
+      - Es-Net
+  Es-Node1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    container_name: Es-Node1
+    restart: always
+    environment:
+      - node.name=Es-Node1
+      - discovery.seed_hosts=Es-Master,Es-Node1,Es-Node2
+      - cluster.initial_master_nodes=Es-Master,Es-Node1,Es-Node2
+      - cluster.name=Es-Service
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch/Es-Node1/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/Es-Node1/conf:/usr/share/elasticsearch/config
+      - ./elasticsearch/Es-Node1/logs:/usr/share/elasticsearch/logs
+    networks:
+      - Es-Net
+  Es-Node2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.0
+    container_name: Es-Node2
+    restart: always
+    environment:
+      - node.name=Es-Node2
+      - discovery.seed_hosts=Es-Master,Es-Node1,Es-Node2
+      - cluster.initial_master_nodes=Es-Master,Es-Node1,Es-Node2
+      - cluster.name=Es-Service
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch/Es-Node2/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/Es-Node2/conf:/usr/share/elasticsearch/config
+      - ./elasticsearch/Es-Node2/logs:/usr/share/elasticsearch/logs
+    networks:
+      - Es-Net
+  Es-Head:
+    image: mobz/elasticsearch-head:5
+    container_name: Es-Head
+    restart: always
+    ports:
+      - 9100:9100
+    networks:
+      - Es-Net
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.0.0
+    container_name: kibana
+    restart: always
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
+    links:
+      - Es-Master
+    environment:
+      SERVER_NAME: kibana
+      SERVER_HOST: 0.0.0.0
+      ELASTICSEARCH_HOSTS: http://Es-Master:9200
+    ports:
+      - 5601:5601
+    networks:
+      - Es-Net
+
+networks:
+  Es-Net:
