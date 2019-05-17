@@ -11,7 +11,7 @@ docker pull mobz/elasticsearch-head:5
 ### 拉取docker-compose文件
 
 ```
-git clone git@github.com:wubolive/docker-elk7.0.git
+git clone https://github.com/wubolive/docker-elk7.0.git
 ```
 
 ### 优化内核配置
